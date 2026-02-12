@@ -1,7 +1,7 @@
 // Background music loader for index pages (excluded on index3.html)
 (function(){
     try {
-        const src = '/assets/audio/background-music.mp3';
+        const src = 'assets/audio/background-music.mp3';
         const bg = document.createElement('audio');
         bg.id = 'bgMusic';
         bg.src = src;
