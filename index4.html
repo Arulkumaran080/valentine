@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Memories</title>
+    <style>
+        /* --- Reset & Base --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* --- 8 Column Diagonal Gallery --- */
+        .gallery-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            /* Extra wide and tall to ensure no edges show during rotation */
+            width: 200vw;
+            height: 200vh;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 11%;
+            /* Calculated to fit 8 columns comfortably */
+        }
+
+        .photo {
+            width: 100%;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            filter: grayscale(40%) brightness(0.7);
+        }
+
+        .photo:hover {
+            filter: grayscale(0%) brightness(1.1);
+            transform: scale(1.05);
+            z-index: 100;
+        }
+
+        .photo img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* --- Animation Speeds for 8 Columns --- */
+        /* Alternating directions and unique timings for organic movement */
+        .col-1 {
+            animation: slide-down 45s linear infinite;
+        }
+
+        .col-2 {
+            animation: slide-up 38s linear infinite;
+        }
+
+        .col-3 {
+            animation: slide-down 52s linear infinite;
+        }
+
+        .col-4 {
+            animation: slide-up 32s linear infinite;
+        }
+
+        .col-5 {
+            animation: slide-down 48s linear infinite;
+        }
+
+        .col-6 {
+            animation: slide-up 40s linear infinite;
+        }
+
+        .col-7 {
+            animation: slide-down 55s linear infinite;
+        }
+
+        .col-8 {
+            animation: slide-up 35s linear infinite;
+        }
+
+        @keyframes slide-up {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-50%);
+            }
+        }
+
+        @keyframes slide-down {
+            0% {
+                transform: translateY(-50%);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        /* --- Modern Vignette --- */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 20%, rgba(0, 0, 0, 0.8) 100%);
+            z-index: 50;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="vignette"></div>
+
+    <div class="gallery-wrapper">
+        <script>
+            const wrapper = document.querySelector('.gallery-wrapper');
+            const images = [
+                "images/slideShowPhotos/img1.jpg",
+                "images/slideShowPhotos/img2.jpg",
+                "images/slideShowPhotos/img3.jpg",
+                "images/slideShowPhotos/img4.jpg",
+                "images/slideShowPhotos/img5.jpg",
+                "images/slideShowPhotos/img6.jpg",
+                "images/slideShowPhotos/img7.jpg",
+                "images/slideShowPhotos/img8.jpg",
+                "images/slideShowPhotos/img9.jpg",
+                "images/slideShowPhotos/img10.jpg",
+                "images/slideShowPhotos/img11.jpg",
+                "images/slideShowPhotos/img12.jpg",
+                "images/slideShowPhotos/img13.jpg",
+                "images/slideShowPhotos/img14.jpg",
+                "images/slideShowPhotos/img15.jpg",
+                "images/slideShowPhotos/img16.jpg",
+                "images/slideShowPhotos/img17.jpg",
+                "images/slideShowPhotos/img18.jpg",
+                "images/slideShowPhotos/img19.jpg",
+                "images/slideShowPhotos/img20.jpg",
+                "images/slideShowPhotos/img21.jpg",
+                "images/slideShowPhotos/img22.jpg",
+                "images/slideShowPhotos/img23.jpg",
+                "images/slideShowPhotos/img24.jpg",
+                "images/slideShowPhotos/img25.jpg",
+                "images/slideShowPhotos/img26.jpg",
+            ];
+
+            for (let i = 1; i <= 10; i++) {
+                const col = document.createElement('div');
+                col.className = `column col-${i}`;
+
+                // Shuffle images for each column slightly so they don't look identical
+                const colImages = [...images].sort(() => Math.random() - 0.5);
+
+                // Content (Set A + Set B for loop)
+                const content = colImages.map(src => `<div class="photo"><img src="${src}"></div>`).join('');
+                col.innerHTML = content + content;
+
+                wrapper.appendChild(col);
+            }
+        </script>
+    </div>
+
+</body>
+<!-- <script src="assets/js/bg-music.js"></script> -->
+<script>
+    (function () {
+        // 1. Setup the audio
+        const bg = new Audio('/assets/audio/background-music1 (2).mp3');
+        bg.loop = true;
+        bg.volume = 0.5; // Set volume to 50% so it's not too loud
+
+        // 2. Create a temporary "Click to Start" overlay
+        const overlay = document.createElement('div');
+        overlay.innerHTML = `
+        <div id="music-prompt" style="
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); color: white; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-family: sans-serif; letter-spacing: 2px;">
+            <p style="border: 1px solid white; padding: 20px 40px; border-radius: 50px;">
+                CLICK TO START EXPERIENCE
+            </p>
+        </div>
+    `;
+        document.body.appendChild(overlay);
+
+        // 3. The Function to start everything
+        function startExperience() {
+            bg.play()
+                .then(() => {
+                    console.log("Music started successfully!");
+                    overlay.remove(); // Remove the prompt once music starts
+                })
+                .catch(err => {
+                    console.error("Playback failed even after click:", err);
+                    // show a clearer message on screen
+                    const msg = document.createElement('div');
+                    msg.style.cssText = 'position:fixed;left:50%;top:20px;transform:translateX(-50%);background:#111;color:#fff;padding:8px 12px;border-radius:6px;z-index:10000';
+                    msg.textContent = 'Unable to play audio — please check console or click the play icon.';
+                    document.body.appendChild(msg);
+                });
+        }
+
+        // 4. Listen for the click
+        overlay.addEventListener('click', startExperience);
+    })();
+</script>
+
+</html>

@@ -1,0 +1,95 @@
+@media (max-width: 1200px) {
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+        gap: var(--spacing-sm);
+    }
+    
+    .modal-nav {
+        padding: 0 var(--spacing-sm);
+    }
+    
+    .ribbon {
+        width: clamp(40px, 8vw, 50px);
+        height: clamp(40px, 8vw, 50px);
+        top: calc(clamp(40px, 8vw, 50px) / -2);
+        left: calc(50% - clamp(40px, 8vw, 50px) / 2);
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .gift-container {
+        width: min(250px, 90vw);
+        height: min(250px, 90vw);
+    }
+    
+    .modal-image-container {
+        padding-top: 75%; /* Adjust aspect ratio for mobile */
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+    .gallery-item:hover {
+        transform: none;
+    }
+    
+    .start-button:hover {
+        transform: none;
+    }
+    
+    .music-toggle:hover {
+        transform: none;
+    }
+}
+
+/* Viewport height fixes for mobile browsers */
+@supports (-webkit-touch-callout: none) {
+    .modal {
+        height: -webkit-fill-available;
+    }
+    
+    body {
+        min-height: -webkit-fill-available;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    :root {
+        --shadow-color: rgba(0, 0, 0, 0.5);
+    }
+    
+    .gallery-item {
+        border: 2px solid var(--black);
+    }
+}
+
+/* Print styles improvement */
+@media print {
+    .gallery-grid {
+        display: block;
+    }
+    
+    .gallery-item {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        margin-bottom: var(--spacing-lg);
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        margin: 10% auto;
+    }
+}

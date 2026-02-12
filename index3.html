@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Surprise</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            background: #000
+        }
+
+        .video-wrap {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #000
+        }
+
+        /* Use contain so portrait videos are shown fully (no crop/zoom) */
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+            display: block
+        }
+
+        .center-fallback {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-family: Arial, Helvetica, sans-serif
+        }
+
+        .controls {
+            position: fixed;
+            right: 16px;
+            top: 16px;
+            z-index: 999
+        }
+
+        .controls a {
+            color: #fff;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-decoration: none
+        }
+
+        .video-controls {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 24px;
+            z-index: 1000;
+            display: flex;
+            gap: 12px
+        }
+
+        .video-controls button {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px
+        }
+    </style>
+</head>
+
+<body>
+    <div class="video-wrap">
+        <video id="surpriseVideo" playsinline loop preload="auto">
+            <source src="videos/video1.mp4" type="video/mp4">
+            Your browser does not support the video element.
+        </video>
+
+        <div class="video-controls" id="videoControls">
+            <button id="playBtn" aria-label="Play/Pause">Play</button>
+            <button id="muteBtn" aria-label="Mute/Unmute">Mute</button>
+        </div>
+    </div>
+
+    <div class="controls">
+        <a href="index4.html">Next Page</a>
+    </div>
+
+    <script>
+        const v = document.getElementById('surpriseVideo');
+        const playBtn = document.getElementById('playBtn');
+        const muteBtn = document.getElementById('muteBtn');
+
+        function updateControls() {
+            playBtn.textContent = v.paused ? 'Play' : 'Pause';
+            muteBtn.textContent = v.muted ? 'Unmute' : 'Mute';
+        }
+
+        // Init state: start paused and unmuted per request
+        v.muted = false;
+        v.pause();
+        updateControls();
+
+        playBtn.addEventListener('click', () => {
+            if (v.paused) {
+                v.play().catch(() => { });
+            } else {
+                v.pause();
+            }
+            updateControls();
+        });
+
+        muteBtn.addEventListener('click', () => {
+            // toggle mute; do not force playback when unmuting
+            v.muted = !v.muted;
+            updateControls();
+        });
+
+        // Clicking the video toggles pause/play
+        v.addEventListener('click', () => {
+            if (v.paused) v.play().catch(() => { }); else v.pause();
+            updateControls();
+        });
+
+        // Keep controls in sync with playback events
+        v.addEventListener('play', updateControls);
+        v.addEventListener('pause', updateControls);
+        v.addEventListener('volumechange', updateControls);
+
+        // Do not autoplay — video remains paused until user presses Play
+    </script>
+</body>
+
+</html>
